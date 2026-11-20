@@ -1,0 +1,415 @@
+/* ==========================================================
+   1. 폰트 (fonts 폴더에 파일을 넣어 주세요. 없으면 대체 서체가 쓰입니다)
+   ========================================================== */
+@font-face {
+  font-family: "Aloja";
+  src: url("../fonts/Aloja-Light.otf") format("opentype");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "OnglipRyuryu";
+  src: url("../fonts/OnglipRyuryu.ttf") format("truetype");
+  font-weight: 400;
+}
+
+/* ==========================================================
+   2. 변수
+   ========================================================== */
+:root {
+  --content-max-width: 1704px;
+
+  --text-color: #ffffff;
+  --logo-color: #f6f6f6;
+
+  --top-font-size: clamp(16px, 1.25vw, 24px);
+  --bottom-font-size: clamp(18px, 1.67vw, 32px);
+  --logo-font-size: clamp(13px, 0.94vw, 18px);
+
+  --korean-shadow: 0.5px 1px 1px rgba(255, 255, 255, 0.3);
+  --logo-shadow: 2px 1px 1px rgba(246, 246, 246, 0.3);
+
+  --bottom-area-color: rgba(124, 126, 182, 0.3);   /* #7C7EB6, 투명도 30% */
+  --choice-box-color: rgba(204, 183, 222, 0.3);    /* #CCB7DE, 투명도 30% */
+  --choice-hover-color: rgba(204, 183, 222, 0.5);
+  --font-main: "OnglipRyuryu", "Gaegu", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+
+/* ==========================================================
+   3. 기본 설정
+   ========================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; background: #14121f; }
+
+button {
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+button:focus-visible { outline: 2px solid #f6f6f6; outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* ==========================================================
+   4. 화면 배경 (그림 파일이 없으면 색 그라데이션이 보입니다)
+   ========================================================== */
+.play-screen {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: var(--font-main);
+  color: var(--text-color);
+  user-select: none;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  background-size: cover;
+  background-position: center;
+}
+.bg.show { opacity: 1; }
+.bg-dim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10, 8, 24, 0.35), rgba(10, 8, 24, 0) 30%, rgba(10, 8, 24, 0) 55%, rgba(10, 8, 24, 0.4));
+  pointer-events: none;
+}
+
+/* 장면별 그림: images 폴더에 같은 이름의 png 파일을 넣으면 바뀝니다 */
+.img-burnt_house { background-image: url("../images/burnt_house.png"), linear-gradient(170deg, #2b2a3d, #55506b 55%, #8c8398); }
+.img-village_door{ background-image: url("../images/village_door.png"), linear-gradient(170deg, #26293f, #4a4f73 55%, #8f8aa8); }
+.img-cottage_dusk{ background-image: url("../images/cottage_dusk.png"), linear-gradient(170deg, #2f2a45, #6a5a7a 55%, #c79a8c); }
+.img-han_house   { background-image: url("../images/han_house.png"),   linear-gradient(170deg, #22263a, #444a68 55%, #7d7f9b); }
+.img-snow_night  { background-image: url("../images/snow_night.png"),  linear-gradient(170deg, #10122a, #232850 55%, #4b5586); }
+.img-far_light   { background-image: url("../images/far_light.png"),   linear-gradient(170deg, #10122a, #2a2f5c 60%, #e6b27a); }
+.img-ending_a    { background-image: url("../images/ending_a.png"),    linear-gradient(170deg, #2a2440, #7a5f80 55%, #f0b988); }
+.img-ending_b    { background-image: url("../images/ending_b.png"),    linear-gradient(170deg, #1d2140, #4b4f80 55%, #d9a679); }
+.img-ending_c    { background-image: url("../images/ending_c.png"),    linear-gradient(170deg, #12142c, #2d3160 55%, #9f8fb8); }
+.img-rescued     { background-image: url("../images/rescued.png"),     linear-gradient(170deg, #0f1129, #232851 55%, #7a6a8a); }
+.img-well        { background-image: url("../images/well.png"),        linear-gradient(170deg, #1f2244, #3e4476 55%, #8a86b2); }
+.img-woodpile    { background-image: url("../images/woodpile.png"),    linear-gradient(170deg, #1f2244, #4a4770 55%, #a08a7a); }
+.img-empty_house { background-image: url("../images/empty_house.png"), linear-gradient(170deg, #17162e, #34325c 55%, #6c6a92); }
+.img-path_view   { background-image: url("../images/path_view.png"),   linear-gradient(170deg, #25243c, #5c5a85 55%, #b7b0cf); }
+
+/* ==========================================================
+   5. 콘텐츠 영역 (가운데 정렬)
+   ========================================================== */
+.content {
+  width: min(var(--content-max-width), calc(100% - 32px));
+  margin: 0 auto;
+}
+
+/* ==========================================================
+   6. 상단 영역
+   ========================================================== */
+.top-bar {
+  z-index: 3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding-top: clamp(16px, 2.2vw, 42px);
+}
+.top-bar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.chapter-title {
+  font-size: var(--top-font-size);
+  line-height: 1.5;
+  text-shadow: var(--korean-shadow);
+}
+.top-left { min-width: 0; }
+.top-menu {
+  flex-shrink: 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 38px);
+}
+.top-menu-button {
+  font-size: var(--top-font-size);
+  line-height: 1.5;
+  text-shadow: var(--korean-shadow);
+  opacity: 0.9;
+}
+.top-menu-button:hover { opacity: 1; }
+.game-logo {
+  font-family: "Aloja", "Cormorant Garamond", Georgia, serif;
+  font-size: var(--logo-font-size);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  color: var(--logo-color);
+  text-shadow: var(--logo-shadow);
+}
+
+/* 상태 표시: 세 줄의 점 */
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-top: 6px;
+  font-size: calc(var(--top-font-size) * 0.75);
+  opacity: 0.85;
+}
+.stat { display: flex; align-items: center; gap: 8px; }
+.dots { display: inline-flex; gap: 3px; }
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  transition: background 0.4s;
+}
+.dot.on { background: rgba(255, 255, 255, 0.9); }
+.stat.flash .dots { animation: flash 0.9s; }
+@keyframes flash { 30% { transform: scale(1.25); filter: brightness(1.6); } }
+.mood { opacity: 0.8; }
+
+/* ==========================================================
+   7. 하단 영역
+   ========================================================== */
+.bottom-area {
+  z-index: 3;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-height: 16.667%;
+  display: flex;
+  align-items: center;
+  padding: clamp(14px, 1.6vw, 28px) 0;
+  background: var(--bottom-area-color);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.bottom-area-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px clamp(16px, 2vw, 34px);
+  flex-wrap: wrap;
+}
+.narration {
+  flex: 1 1 340px;
+  padding-left: 14px;
+  font-size: var(--bottom-font-size);
+  line-height: 1.45;
+  text-shadow: var(--korean-shadow);
+  white-space: pre-line;
+  min-width: 0;
+}
+.narration.fade { animation: fadeIn 0.6s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.narration .result { opacity: 0.95; }
+.narration .delta { display: block; margin-top: 6px; font-size: 0.6em; opacity: 0.75; letter-spacing: 0.02em; }
+
+/* ==========================================================
+   8. 선택 버튼
+   ========================================================== */
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+.choice-button, .next-button {
+  min-height: 48px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: var(--choice-box-color);
+  font-size: var(--bottom-font-size);
+  line-height: 1.3;
+  text-align: left;
+  text-shadow: var(--korean-shadow);
+  transition: background 0.2s;
+}
+.choice-button:hover:enabled, .next-button:hover { background: var(--choice-hover-color); }
+.choice-button .no { opacity: 0.6; margin-right: 8px; font-size: 0.75em; }
+.choice-button:disabled { cursor: default; opacity: 0.45; }
+.choice-button .why { display: block; font-size: 0.6em; opacity: 0.9; margin-top: 2px; }
+.next-button { text-align: center; padding: 6px 28px; }
+.next-button::after { content: " ▸"; opacity: 0.7; }
+.choice-list.reflect-actions { align-items: flex-end; }
+
+/* ==========================================================
+   9. 도움말
+   ========================================================== */
+.overlay {
+  position: absolute; inset: 0; z-index: 30;
+  display: grid; place-items: center;
+  padding: 16px;
+  background: rgba(10, 8, 24, 0.6);
+}
+.overlay-box {
+  width: min(640px, 100%);
+  display: flex; flex-direction: column; gap: 14px; align-items: flex-start;
+  padding: 28px;
+  border-radius: 14px;
+  background: rgba(124, 126, 182, 0.55);
+  backdrop-filter: blur(6px);
+  font-size: clamp(17px, 1.3vw, 24px);
+  line-height: 1.5;
+  text-shadow: var(--korean-shadow);
+}
+
+@media (max-width: 720px) {
+  .narration { padding-left: 0; }
+  .choice-list { width: 100%; }
+  .top-menu-button { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg { transition: none; }
+  .narration.fade, .stat.flash .dots { animation: none; }
+}
+
+/* ==========================================================
+   10. 마을 지도
+   ========================================================== */
+.map-layer, .mini-layer { position: absolute; inset: 0; z-index: 1; }
+.map-layer { background: #14122b; }
+.map-layer svg { width: 100%; height: 100%; display: block; }
+
+.road-edge { fill: none; stroke: #2e2b5c; stroke-width: 34; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; }
+.road-in   { fill: none; stroke: #b4aee0; stroke-width: 22; stroke-linecap: round; stroke-linejoin: round; opacity: 0.45; }
+.trail ellipse { fill: rgba(255, 255, 255, 0.55); }
+.preview { stroke: #ffd9a3; stroke-width: 5; stroke-dasharray: 4 14; stroke-linecap: round; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.preview.on { opacity: 0.95; animation: dash 1s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -36; } }
+
+.spot { cursor: pointer; outline: none; }
+.spot .ring { fill: rgba(255, 217, 163, 0.18); stroke: rgba(255, 217, 163, 0.6); stroke-width: 2; opacity: 0; }
+.spot.available .ring { opacity: 1; animation: pulse 2.2s ease-in-out infinite; }
+.spot:hover .spot-art, .spot:focus-visible .spot-art { filter: brightness(1.18); }
+.spot:focus-visible .ring { opacity: 1; stroke: #fff; }
+.spot.locked { cursor: help; }
+.spot.locked .spot-art { opacity: 0.5; filter: saturate(0.4); }
+.spot.done .spot-art { opacity: 0.75; }
+.spot.done { cursor: default; }
+@keyframes pulse { 50% { opacity: 0.45; } }
+
+.spot-name { font-family: var(--font-main); font-size: 28px; fill: #fff; stroke: rgba(20, 16, 50, 0.85); stroke-width: 5px; paint-order: stroke; stroke-linejoin: round; }
+.spot-name.dim { fill: #d9d3ee; font-size: 24px; }
+.spot-sub { font-family: var(--font-main); font-size: 22px; fill: #ffd9a3; stroke: rgba(20, 16, 50, 0.85); stroke-width: 4px; paint-order: stroke; stroke-linejoin: round; }
+.spot.locked .spot-sub, .spot.done .spot-sub { fill: #cfc8ea; }
+
+.hero { pointer-events: none; }
+.lantern { animation: flicker 1.6s ease-in-out infinite; transform-origin: 15px -14px; transform-box: fill-box; }
+@keyframes flicker { 50% { opacity: 0.6; } }
+.smoke circle { animation: rise 4s ease-in infinite; }
+.smoke circle:nth-child(2) { animation-delay: 1.3s; }
+.smoke circle:nth-child(3) { animation-delay: 2.6s; }
+@keyframes rise { from { transform: translateY(14px); opacity: 0.4; } to { transform: translateY(-22px); opacity: 0; } }
+.embers circle { animation: flicker 2s ease-in-out infinite; }
+.far-light { animation: flicker 3s ease-in-out infinite; }
+
+.flake { fill: #fff; opacity: 0.8; animation: fall linear infinite; }
+@keyframes fall { from { transform: translateY(0); } to { transform: translateY(960px); } }
+
+/* ==========================================================
+   11. 5초 놀이 (장작 줍기)
+   ========================================================== */
+.mini-layer { background: rgba(10, 8, 24, 0.25); padding: clamp(80px, 9vw, 130px) 0 clamp(150px, 17vh, 220px); display: flex; flex-direction: column; }
+.mini-hud { display: flex; justify-content: space-between; width: min(var(--content-max-width), calc(100% - 32px)); margin: 0 auto 10px; font-size: var(--top-font-size); text-shadow: var(--korean-shadow); }
+.mini-field { position: relative; flex: 1; width: min(var(--content-max-width), calc(100% - 32px)); margin: 0 auto; touch-action: manipulation; }
+.stick {
+  position: absolute; width: 76px; height: 76px; padding: 0;
+  border-radius: 50%; background: radial-gradient(circle, rgba(255, 217, 163, 0.35), rgba(255, 217, 163, 0) 70%);
+  animation: pop 0.25s ease-out;
+}
+.stick::before {
+  content: ""; position: absolute; left: 8px; top: 33px; width: 60px; height: 10px; border-radius: 6px;
+  background: linear-gradient(#a8856a, #6f523d); transform: rotate(var(--rot));
+}
+.stick.got { opacity: 0; transform: scale(1.4); transition: all 0.2s; }
+@keyframes pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ==========================================================
+   12. 타이틀 화면 (시안: 최대 너비 1200px, 제목 64px, 메뉴 24px)
+   ========================================================== */
+.title-screen {
+  --title-content-max-width: 1200px;
+  --title-color: #f6f6f6;
+  --title-size: 64px;
+  --menu-color: #ffffff;
+  --menu-size: 24px;
+  --menu-line-height: 40px;
+  --title-shadow: 2px 1px 1px rgba(246, 246, 246, 0.3);
+  --menu-shadow: 0.5px 1px 1px rgba(255, 255, 255, 0.3);
+
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  background: url("../images/title.png") center / cover no-repeat, linear-gradient(170deg, #2a2440, #7a5f80 55%, #f0b988);
+  transition: opacity 0.7s ease;
+}
+.title-screen.hide { opacity: 0; pointer-events: none; }
+
+.title-content {
+  position: relative;
+  width: 100%;
+  max-width: var(--title-content-max-width);
+  height: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title-area {
+  position: absolute;
+  top: 18.5%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+}
+.game-title {
+  font-family: "Aloja", "Cormorant Garamond", Georgia, serif;
+  font-size: var(--title-size);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--title-color);
+  text-shadow: var(--title-shadow);
+}
+
+.bottom-menu {
+  position: absolute;
+  top: 72.2%;
+  left: 0;
+  width: 100%;
+}
+.menu-list { list-style: none; }
+.menu-button {
+  display: block;
+  width: 100%;
+  height: var(--menu-line-height);
+  border: 0;
+  background: none;
+  font-family: var(--font-main);
+  font-size: var(--menu-size);
+  line-height: var(--menu-line-height);
+  color: var(--menu-color);
+  text-shadow: var(--menu-shadow);
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.menu-button:hover:enabled { opacity: 0.75; }
+.menu-button:disabled { opacity: 0.4; cursor: default; }
+
+/* ==========================================================
+   13. 설정, 움직임 줄이기
+   ========================================================== */
+.settings-note { font-size: 0.7em; opacity: 0.85; min-height: 1.2em; }
+.overlay-box .choice-button { width: 100%; }
+button.game-logo { cursor: pointer; }
+button.game-logo:hover { opacity: 0.75; }
+body.hide-status .status { display: none; }
+body.calm *, body.calm *::before, body.calm *::after { animation: none !important; transition: none !important; }
