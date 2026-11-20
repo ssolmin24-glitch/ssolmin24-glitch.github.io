@@ -1,0 +1,19 @@
+장면 그림을 아래 이름의 png 파일로 이 폴더에 넣으면 배경이 바뀝니다. 없으면 색 그라데이션이 보입니다.
+(그림 크기는 16:9, 하단 20%는 문장 영역에 가려지니 비워 두세요)
+
+burnt_house.png   프롤로그: 불탄 집터
+village_door.png  1장: 윗마을 첫 집
+cottage_dusk.png  2장: 아랫마을 노부부 집
+han_house.png     3장: 한 씨 집 앞
+snow_night.png    4장: 눈길의 밤
+far_light.png     5장: 먼 불빛
+rescued.png       5장: 쓰러진 주인공과 다가오는 등불
+ending_a.png      엔딩 A: 함께 앉는 불
+ending_b.png      엔딩 B: 문 앞의 불
+ending_c.png      엔딩 C: 혼자 지키는 불
+path_view.png     되돌아보기
+well.png          선택 방문: 마을 우물
+woodpile.png      선택 방문: 장작더미
+empty_house.png   선택 방문: 빈 집
+
+title.png         타이틀 화면 배경 (이미 들어 있음)
